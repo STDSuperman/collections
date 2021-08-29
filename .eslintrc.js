@@ -1,5 +1,3 @@
-const NodeGlobals = ['module', 'require']
-
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -13,8 +11,7 @@ module.exports = {
     'no-unused-vars': [
       1,
       { varsIgnorePattern: '.*', args: 'none' }
-    ],
-    'no-restricted-globals': ['error', ...NodeGlobals]
+    ]
   },
   overrides: []
 }
