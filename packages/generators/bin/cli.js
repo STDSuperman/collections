@@ -3,7 +3,7 @@
 "use strict";
 
 const importLocal = require("import-local");
-const runCLI = require("../lib/bootstrap");
+const { runCLI } = require("../dist/bootstrap.js");
 
 if (importLocal(__filename)) return;
 

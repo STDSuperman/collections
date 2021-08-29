@@ -15,3 +15,7 @@ export interface ICommandOption {
 	defaultValue?: any;
 	description?: string;
 }
+
+export interface IGenerateCommandOptions {
+	template: string;
+}

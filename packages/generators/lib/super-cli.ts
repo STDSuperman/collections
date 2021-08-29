@@ -1,7 +1,10 @@
-import { program, Command } from 'commander'
+import { program } from 'commander'
+import type { Command } from 'commander'
+import { tsGenerator } from './ts-generator';
 import {
 	ICommandConfig,
-	ICommandOption
+	ICommandOption,
+	IGenerateCommandOptions
 } from './types'
 
 export class SuperCli {
@@ -12,7 +15,8 @@ export class SuperCli {
 	}
 
 	makeCommand(
-		commandOpts: ICommandConfig
+		commandOpts: ICommandConfig,
+		cb: (...args: any[]) => void
 	) {
 		if (this.checkCommandExist(commandOpts)) return;
 		const command = this.program.command(commandOpts.name, {
@@ -34,6 +38,7 @@ export class SuperCli {
 			commandOpts.argsDescription || {}
 		)
 		this.makeOptions(commandOpts.opts, command);
+		command.action(cb)
 		return command;
 	}
 
@@ -65,7 +70,7 @@ export class SuperCli {
 		const generateNewAppCommandConfig: ICommandConfig = {
 			name: 'generate <project-name>',
 			alias: 'g',
-			description: 'Initialize a new ts project.',
+			description: 'Initialize a new ts/js project.',
 			argsDescription: {
 				'project-name': 'The name of the entire project'
 			},
@@ -76,6 +81,22 @@ export class SuperCli {
 				defaultValue: 'ts'
 			}]
 		}
+
+		this.makeCommand(
+			generateNewAppCommandConfig,
+			(
+				projectName: string,
+				opts: IGenerateCommandOptions
+			) => {
+				if (opts.template === 'ts') {
+					const generator = new tsGenerator({
+						projectName,
+						opts
+					})
+					generator.run();
+				} else {}
+			}
+		);
 
 		await this.program.parseAsync();
 	}
