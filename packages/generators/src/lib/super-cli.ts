@@ -79,6 +79,10 @@ export class SuperCli {
 				flags: '-t, --template [type]',
 				description: 'add the specified template type for project',
 				defaultValue: 'ts'
+			}, {
+				flags: '-o, --overwrite',
+				description: 'overwrite exist file',
+				defaultValue: false
 			}]
 		}
 
@@ -93,11 +97,10 @@ export class SuperCli {
 						projectName,
 						opts
 					})
-					generator.run();
+					generator.run(args);
 				} else {}
 			}
 		);
-
 		await this.program.parseAsync();
 	}
 }

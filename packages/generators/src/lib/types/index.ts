@@ -18,4 +18,5 @@ export interface ICommandOption {
 
 export interface IGenerateCommandOptions {
 	template: string;
+	overwrite: boolean;
 }

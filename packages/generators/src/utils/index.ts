@@ -6,7 +6,7 @@ export function mkdirpSync(
 	mode?: string | number,
 	cb?: () => void
 ):void {
-	const arr = path.split('/');
+	const arr = path.split('/').filter(i => i);
 
 	if (arr[0] === './') {
 		arr.shift();
@@ -14,10 +14,11 @@ export function mkdirpSync(
 	if (arr[0] === '../') {
 		arr.splice(0, 2, arr[0] + '/' + arr[1]);
 	}
-
-	function inner(curPath: string = '') {
+	const inner = (curPath = '') => {
 		if (!existsSync(curPath)) {
-			mkdirSync(curPath, mode || 0o755);
+			mkdirSync(curPath, {
+				mode
+			});
 		}
 
 		if (arr.length) {

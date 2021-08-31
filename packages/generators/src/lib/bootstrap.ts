@@ -8,7 +8,7 @@ export async function runCLI(
 		const cli = new SuperCli();
 		await cli.run(args);
 	} catch (err) {
-		console.error(err);
+		consola.error(err);
 		process.exit(err.code || err.message);
 	}
 }
