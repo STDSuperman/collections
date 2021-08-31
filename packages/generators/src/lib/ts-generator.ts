@@ -41,23 +41,7 @@ export class tsGenerator {
 
 	run(args: string[]) {
 		this.checkProjectNameExist();
-		this.templateFileList.forEach(
-			filename => {
-				const fullTemplateFilePath = this.getTemplateFilePath(filename)
-				const templateFileContent = readFileSync(
-					fullTemplateFilePath,
-					'utf8'
-				);
-				const compiledFileContent = ejs
-					.compile(templateFileContent)({
-						projectName: this.projectName
-					})
-				this.writeFileTree({
-					filename,
-					value: compiledFileContent
-				});
-			}
-		)
+		this.writeInitFile();
 		this.runInstall();
 	}
 
@@ -90,6 +74,26 @@ export class tsGenerator {
 	writeFileTree(fileInfo: IWriteFileInfo) {
 		const outputFilePath = this.getOutputFilePath(fileInfo.filename);
 		writeFileSync(outputFilePath, fileInfo.value);
+	}
+
+	writeInitFile() {
+		this.templateFileList.forEach(
+			filename => {
+				const fullTemplateFilePath = this.getTemplateFilePath(filename)
+				const templateFileContent = readFileSync(
+					fullTemplateFilePath,
+					'utf8'
+				);
+				const compiledFileContent = ejs
+					.compile(templateFileContent)({
+						projectName: this.projectName
+					})
+				this.writeFileTree({
+					filename,
+					value: compiledFileContent
+				});
+			}
+		)
 	}
 
 	runInstall() {}
