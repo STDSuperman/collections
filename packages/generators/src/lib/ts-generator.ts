@@ -1,6 +1,11 @@
 
 import { IGenerateCommandOptions } from './types'
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { 
+	readFileSync,
+	writeFileSync,
+	existsSync,
+	readdirSync
+} from 'fs';
 import { resolve as pathResolve, join as pathJoin } from 'path';
 import ejs from 'ejs';
 import { mkdirpSync } from 'fs-extra'
@@ -19,17 +24,17 @@ export class tsGenerator {
 	private projectName: string;
 	private opts: IGenerateCommandOptions
 	private templateFileList: string[] = [];
-	private templateDirPath: string;
+	private genInitTemplateDirPath: string;
 	private outputDirPath: string;
 	private templateEngineExt = '.ejs'
 	constructor(options: ITsGeneratorOptions) {
 		this.projectName = options.projectName;
 		this.opts = options.opts;
-		this.templateFileList = this.getTemplateFileList();
-		this.templateDirPath = pathResolve(
+		this.genInitTemplateDirPath = pathResolve(
 			__dirname,
 			'../templates/generator-init-template'
 		);
+		this.templateFileList = this.getTemplateFileList();
 		const cwd = process.cwd();
 		this.outputDirPath = pathResolve(cwd, this.projectName);
 	}
@@ -53,6 +58,7 @@ export class tsGenerator {
 				});
 			}
 		)
+		this.runInstall();
 	}
 
 	checkProjectNameExist() {
@@ -67,15 +73,14 @@ export class tsGenerator {
 
 	getTemplateFilePath(filename: string) {
 		return pathJoin(
-			this.templateDirPath,
+			this.genInitTemplateDirPath,
 			filename + this.templateEngineExt
 		);
 	}
 
 	getTemplateFileList() {
-		return [
-			'package.json'
-		]
+		const fileList = readdirSync(this.genInitTemplateDirPath)
+		return fileList.map(filename => filename.slice(0, -4))
 	}
 
 	getOutputFilePath(filename: string) {
@@ -86,4 +91,6 @@ export class tsGenerator {
 		const outputFilePath = this.getOutputFilePath(fileInfo.filename);
 		writeFileSync(outputFilePath, fileInfo.value);
 	}
+
+	runInstall() {}
 }
