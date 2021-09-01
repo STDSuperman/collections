@@ -6,11 +6,14 @@ import {
 	existsSync,
 	readdirSync
 } from 'fs';
+import {
+	command as execCommand
+} from 'execa'
+import type { Options, SyncOptions } from 'execa'
 import { resolve as pathResolve, join as pathJoin } from 'path';
-import ejs from 'ejs';
+import { compile as ejsCompile } from 'ejs';
 import { mkdirpSync } from 'fs-extra'
 import consola from 'consola'
-import { command as execCommand } from 'execa'
 export interface ITsGeneratorOptions {
 	projectName: string;
 	opts: IGenerateCommandOptions;
@@ -19,6 +22,11 @@ export interface ITsGeneratorOptions {
 export interface IWriteFileInfo {
 	filename: string;
 	value: string;
+}
+
+export type ICommandOption = string | {
+	command: string;
+	options?: SyncOptions<string>;
 }
 
 export class tsGenerator {
@@ -44,7 +52,7 @@ export class tsGenerator {
 	run(args: string[]) {
 		this.checkProjectNameExist();
 		this.writeInitFile();
-		this.runInstall();
+		this.runInitCommand();
 	}
 
 	checkProjectNameExist() {
@@ -88,8 +96,7 @@ export class tsGenerator {
 					fullTemplateFilePath,
 					'utf8'
 				);
-				const compiledFileContent = ejs
-					.compile(templateFileContent)({
+				const compiledFileContent = ejsCompile(templateFileContent)({
 						projectName: this.projectName
 					})
 				this.writeFileTree({
@@ -100,20 +107,41 @@ export class tsGenerator {
 		)
 	}
 
-	async runInstall() {
+	async runInitCommand() {
 		try {
-			await execCommand(`yarn`, {
+			await this.batchExecCommandsWithoutOptions([
+				'yarn',
+				'git init',
+				'pwd',
+				'npx husky install',
+				"npx husky set .husky/_/pre-commit 'npm run test'",
+				"npx husky set .husky/_/commit-msg 'yarn commitlint --edit $1'"
+			], {
 				cwd: this.outputDirPath
-			})?.stdout?.pipe(process.stdout);
+			})
 		} catch (err) {
 			consola.error(err);
 		}
 	}
 
-	async batchExecCommandsWithoutOptions(commandList: string[]) {
+	async batchExecCommandsWithoutOptions(
+		commandList: ICommandOption[],
+		commonOptions?: SyncOptions<string>
+	) {
 		let curIdx = 0;
 		while (curIdx < commandList.length) {
-			execCommand(commandList[curIdx])?.stdout?.pipe(process.stdout);
+			const commandInfo = commandList[curIdx];
+			console.log(commandInfo)
+			await execCommand(
+				typeof commandInfo === 'string' 
+					? commandInfo
+					: commandInfo.command,
+				commonOptions
+					? commonOptions
+					: typeof commandInfo === 'string'
+					? undefined
+					: commandInfo?.options
+			).stdout?.pipe(process.stdout)
 			curIdx++;
 		}
 	}
