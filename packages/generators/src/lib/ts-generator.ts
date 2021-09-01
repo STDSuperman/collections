@@ -10,6 +10,7 @@ import { resolve as pathResolve, join as pathJoin } from 'path';
 import ejs from 'ejs';
 import { mkdirpSync } from 'fs-extra'
 import consola from 'consola'
+import { command as execCommand } from 'execa'
 export interface ITsGeneratorOptions {
 	projectName: string;
 	opts: IGenerateCommandOptions;
@@ -27,6 +28,7 @@ export class tsGenerator {
 	private genInitTemplateDirPath: string;
 	private outputDirPath: string;
 	private templateEngineExt = '.ejs'
+	private ignoreTemplateFile = ['.DS_Store']
 	constructor(options: ITsGeneratorOptions) {
 		this.projectName = options.projectName;
 		this.opts = options.opts;
@@ -64,7 +66,9 @@ export class tsGenerator {
 
 	getTemplateFileList() {
 		const fileList = readdirSync(this.genInitTemplateDirPath)
-		return fileList.map(filename => filename.slice(0, -4))
+		return fileList
+			.filter(filename => !this.ignoreTemplateFile.includes(filename))
+			.map(filename => filename.slice(0, -4))
 	}
 
 	getOutputFilePath(filename: string) {
@@ -96,5 +100,21 @@ export class tsGenerator {
 		)
 	}
 
-	runInstall() {}
+	async runInstall() {
+		try {
+			await execCommand(`yarn`, {
+				cwd: this.outputDirPath
+			})?.stdout?.pipe(process.stdout);
+		} catch (err) {
+			consola.error(err);
+		}
+	}
+
+	async batchExecCommandsWithoutOptions(commandList: string[]) {
+		let curIdx = 0;
+		while (curIdx < commandList.length) {
+			execCommand(commandList[curIdx])?.stdout?.pipe(process.stdout);
+			curIdx++;
+		}
+	}
 }
