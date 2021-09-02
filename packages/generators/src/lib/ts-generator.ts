@@ -7,7 +7,7 @@ import {
 	readdirSync
 } from 'fs';
 import {
-	command as execCommand
+	command as execCommandAsync,
 } from 'execa'
 import type { Options, SyncOptions } from 'execa'
 import { resolve as pathResolve, join as pathJoin } from 'path';
@@ -113,9 +113,8 @@ export class tsGenerator {
 				'yarn',
 				'git init',
 				'pwd',
-				'npx husky install',
-				"npx husky set .husky/_/pre-commit 'npm run test'",
-				"npx husky set .husky/_/commit-msg 'yarn commitlint --edit $1'"
+				'yarn husky-pre-commit',
+				'yarn husky-commit-msg'
 			], {
 				cwd: this.outputDirPath
 			})
@@ -131,8 +130,7 @@ export class tsGenerator {
 		let curIdx = 0;
 		while (curIdx < commandList.length) {
 			const commandInfo = commandList[curIdx];
-			console.log(commandInfo)
-			await execCommand(
+			const commandResult = execCommandAsync(
 				typeof commandInfo === 'string' 
 					? commandInfo
 					: commandInfo.command,
@@ -141,7 +139,9 @@ export class tsGenerator {
 					: typeof commandInfo === 'string'
 					? undefined
 					: commandInfo?.options
-			).stdout?.pipe(process.stdout)
+			);
+			commandResult.stdout?.pipe(process.stdout);
+			await commandResult;
 			curIdx++;
 		}
 	}
