@@ -9,11 +9,12 @@ import {
 import {
 	command as execCommandAsync,
 } from 'execa'
-import type { Options, SyncOptions } from 'execa'
+import type { SyncOptions } from 'execa'
 import { resolve as pathResolve, join as pathJoin } from 'path';
 import { compile as ejsCompile } from 'ejs';
-import { mkdirpSync } from 'fs-extra'
-import consola from 'consola'
+import { mkdirpSync } from 'fs-extra';
+import consola from 'consola';
+import { getExecCommand, getInstallCommand } from '../utils';
 export interface ITsGeneratorOptions {
 	projectName: string;
 	opts: IGenerateCommandOptions;
@@ -108,13 +109,13 @@ export class tsGenerator {
 	}
 
 	async runInitCommand() {
+		const execCommand = getExecCommand();
 		try {
-			await this.batchExecCommandsWithoutOptions([
-				'yarn',
-				'git init',
-				'pwd',
-				'yarn husky-pre-commit',
-				'yarn husky-commit-msg'
+			await this.batchExecCommandsSyncWithoutOptions([
+				`${getInstallCommand()}`,
+				`git init`,
+				`${execCommand} husky-pre-commit`,
+				`${execCommand} husky-commit-msg`
 			], {
 				cwd: this.outputDirPath
 			})
@@ -123,7 +124,7 @@ export class tsGenerator {
 		}
 	}
 
-	async batchExecCommandsWithoutOptions(
+	async batchExecCommandsSyncWithoutOptions(
 		commandList: ICommandOption[],
 		commonOptions?: SyncOptions<string>
 	) {

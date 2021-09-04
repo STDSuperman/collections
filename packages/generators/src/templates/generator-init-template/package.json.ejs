@@ -12,7 +12,7 @@
 	  "format": "prettier --check src/**/*.ts",
 	  "format:fix": "prettier --write .",
 	  "husky-pre-commit": "husky set .husky/_/pre-commit 'npm run test'",
-	  "husky-commit-msg": "husky set .husky/_/commit-msg 'yarn commitlint --edit $1'"
+	  "husky-commit-msg": "husky set .husky/_/commit-msg 'npm run commitlint --edit $1'"
 	},
 	"devDependencies": {
 	  "@commitlint/cli": "^13.1.0",
