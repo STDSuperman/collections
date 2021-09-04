@@ -54,6 +54,7 @@ export class tsGenerator {
 		this.checkProjectNameExist();
 		this.writeInitFile();
 		this.runInitCommand();
+		this.makeInitDir();
 	}
 
 	checkProjectNameExist() {
@@ -108,12 +109,16 @@ export class tsGenerator {
 		)
 	}
 
+	makeInitDir() {
+		mkdirpSync(pathResolve(this.outputDirPath, 'src'));
+	}
+
 	async runInitCommand() {
 		const execCommand = getExecCommand();
 		try {
 			await this.batchExecCommandsSyncWithoutOptions([
-				`${getInstallCommand()}`,
 				`git init`,
+				`${getInstallCommand()}`,
 				`${execCommand} husky-pre-commit`,
 				`${execCommand} husky-commit-msg`
 			], {
