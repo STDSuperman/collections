@@ -9,7 +9,7 @@ import {
 import {
 	command as execCommandAsync,
 } from 'execa'
-import type { SyncOptions } from 'execa'
+import type { Options } from 'execa'
 import { resolve as pathResolve, join as pathJoin } from 'path';
 import { compile as ejsCompile } from 'ejs';
 import { mkdirpSync } from 'fs-extra';
@@ -27,7 +27,7 @@ export interface IWriteFileInfo {
 
 export type ICommandOption = string | {
 	command: string;
-	options?: SyncOptions<string>;
+	options?: Options<string>;
 }
 
 export class tsGenerator {
@@ -126,7 +126,7 @@ export class tsGenerator {
 
 	async batchExecCommandsSyncWithoutOptions(
 		commandList: ICommandOption[],
-		commonOptions?: SyncOptions<string>
+		commonOptions?: Options
 	) {
 		let curIdx = 0;
 		while (curIdx < commandList.length) {
