@@ -99,7 +99,8 @@ export class tsGenerator {
 					'utf8'
 				);
 				const compiledFileContent = ejsCompile(templateFileContent)({
-						projectName: this.projectName
+						projectName: this.projectName,
+						isTsTemplate: this.opts.template === 'ts'
 					})
 				this.writeFileTree({
 					filename,

@@ -13,8 +13,7 @@
     "check": "tsc --noEmit",
     "lint:fix": "eslint --fix .",
     "format": "prettier --check src/**/*.ts",
-    "format:fix": "prettier --write .",
-    "test": ""
+    "format:fix": "prettier --write ."
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
