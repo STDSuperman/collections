@@ -54,7 +54,7 @@ export class tsGenerator {
 		this.checkProjectNameExist();
 		this.writeInitFile();
 		this.runInitCommand();
-		this.makeInitDir();
+		this.makeInitDirAndFile();
 	}
 
 	checkProjectNameExist() {
@@ -110,8 +110,16 @@ export class tsGenerator {
 		)
 	}
 
-	makeInitDir() {
+	makeInitDirAndFile() {
 		mkdirpSync(pathResolve(this.outputDirPath, 'src'));
+		writeFileSync(
+			pathResolve(
+				this.outputDirPath,
+				'src',
+				'index.' + this.opts.template
+			),
+			''
+		);
 	}
 
 	async runInitCommand() {

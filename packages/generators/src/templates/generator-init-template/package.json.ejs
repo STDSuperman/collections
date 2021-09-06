@@ -20,19 +20,22 @@
 	  <%_ } _%> 
 	},
 	"devDependencies": {
-	  "@commitlint/cli": "^13.1.0",
-	  "@commitlint/config-conventional": "^13.1.0",
-	  "@typescript-eslint/eslint-plugin": "^4.29.3",
-	  "@typescript-eslint/parser": "^4.29.3",
-	  "commitizen": "^4.2.4",
-	  "commitlint-config-cz": "^0.13.2",
-	  "cz-conventional-changelog": "^3.3.0",
-	  "cz-customizable": "^6.3.0",
-	  "eslint": "^7.32.0",
-	  "husky": "^7.0.2",
-	  "prettier": "^2.3.2",
-	  <%isTsTemplate ? `"typescript": "^4.4.2",` : ''%>
-	  "rimraf": "^3.0.2"
+		"@commitlint/cli": "^13.1.0",
+		"@commitlint/config-conventional": "^13.1.0",
+		"@typescript-eslint/eslint-plugin": "^4.29.3",
+		"@typescript-eslint/parser": "^4.29.3",
+		"commitizen": "^4.2.4",
+		"commitlint-config-cz": "^0.13.2",
+		"cz-conventional-changelog": "^3.3.0",
+		"cz-customizable": "^6.3.0",
+		"eslint": "^7.32.0",
+		"husky": "^7.0.2",
+	  	"prettier": "^2.3.2",
+	  	<%_ if (isTsTemplate) { _%>
+		"typescript": "^4.4.2",
+		<%_ } _%>
+	  	"rimraf": "^3.0.2",
+		"eslint-plugin-import": "^2.24.2"
 	},
 	"config": {
 	  "commitizen": {
