@@ -38,6 +38,7 @@ export class tsGenerator {
 	private outputDirPath: string;
 	private templateEngineExt = '.ejs'
 	private ignoreTemplateFile = ['.DS_Store']
+	private isTsTemplate = false;
 	constructor(options: ITsGeneratorOptions) {
 		this.projectName = options.projectName;
 		this.opts = options.opts;
@@ -45,13 +46,14 @@ export class tsGenerator {
 			__dirname,
 			'../templates/generator-init-template'
 		);
-		this.templateFileList = this.getTemplateFileList();
 		const cwd = process.cwd();
 		this.outputDirPath = pathResolve(cwd, this.projectName);
+		this.isTsTemplate = this.opts.template === 'ts';
 	}
 
 	run(args: string[]) {
 		this.checkProjectNameExist();
+		this.initTemplateConfig();
 		this.writeInitFile();
 		this.runInitCommand();
 		this.makeInitDirAndFile();
@@ -72,6 +74,14 @@ export class tsGenerator {
 			this.genInitTemplateDirPath,
 			filename + this.templateEngineExt
 		);
+	}
+
+	initTemplateConfig() {
+		if (!this.isTsTemplate) {
+			// ignore ts-config
+			this.ignoreTemplateFile.push('tsconfig.json.ejs');
+		}
+		this.templateFileList = this.getTemplateFileList();
 	}
 
 	getTemplateFileList() {
@@ -100,7 +110,7 @@ export class tsGenerator {
 				);
 				const compiledFileContent = ejsCompile(templateFileContent)({
 						projectName: this.projectName,
-						isTsTemplate: this.opts.template === 'ts'
+						isTsTemplate: this.isTsTemplate
 					})
 				this.writeFileTree({
 					filename,

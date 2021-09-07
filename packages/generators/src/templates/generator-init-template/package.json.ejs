@@ -11,7 +11,7 @@
 		"format:fix": "prettier --write .",
 		"husky-pre-commit": "husky set .husky/_/pre-commit 'npm run test'",
 		"husky-commit-msg": "husky set .husky/_/commit-msg 'npm run commitlint --edit $1'",
-		"clean": "rimraf dist"<%= isTsTemplate && ',' %> 
+		"clean": "rimraf dist"<%= isTsTemplate ? ',' : '' %> 
 	  <%_ if (isTsTemplate) { _%>
 		"build": "npm run clean && tsc --build",
 		"build:watch": "tsc --watch",
@@ -22,8 +22,6 @@
 	"devDependencies": {
 		"@commitlint/cli": "^13.1.0",
 		"@commitlint/config-conventional": "^13.1.0",
-		"@typescript-eslint/eslint-plugin": "^4.29.3",
-		"@typescript-eslint/parser": "^4.29.3",
 		"commitizen": "^4.2.4",
 		"commitlint-config-cz": "^0.13.2",
 		"cz-conventional-changelog": "^3.3.0",
@@ -33,7 +31,11 @@
 	  	"prettier": "^2.3.2",
 	  	<%_ if (isTsTemplate) { _%>
 		"typescript": "^4.4.2",
-		<%_ } _%>
+		"@typescript-eslint/eslint-plugin": "^4.29.3",
+		"@typescript-eslint/parser": "^4.29.3",
+		<%_ } else { _%>
+		"babel-eslint": "^10.1.0",
+		<%_ } _%> 
 	  	"rimraf": "^3.0.2",
 		"eslint-plugin-import": "^2.24.2"
 	},
