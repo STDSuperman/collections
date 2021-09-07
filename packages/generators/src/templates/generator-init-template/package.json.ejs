@@ -11,7 +11,7 @@
 		"format:fix": "prettier --write .",
 		"husky-pre-commit": "husky set .husky/_/pre-commit 'npm run test'",
 		"husky-commit-msg": "husky set .husky/_/commit-msg 'npm run commitlint --edit $1'",
-		"clean": "rimraf dist",
+		"clean": "rimraf dist"<%= isTsTemplate && ',' %> 
 	  <%_ if (isTsTemplate) { _%>
 		"build": "npm run clean && tsc --build",
 		"build:watch": "tsc --watch",

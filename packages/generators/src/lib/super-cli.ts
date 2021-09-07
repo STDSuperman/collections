@@ -1,6 +1,6 @@
 import { program } from 'commander'
 import type { Command } from 'commander'
-import { tsGenerator } from './ts-generator';
+import { tsGenerator } from './pro-generator';
 import {
 	ICommandConfig,
 	ICommandOption,
@@ -92,13 +92,11 @@ export class SuperCli {
 				projectName: string,
 				opts: IGenerateCommandOptions
 			) => {
-				if (opts.template === 'ts') {
-					const generator = new tsGenerator({
-						projectName,
-						opts
-					})
-					generator.run(args);
-				} else {}
+				const generator = new tsGenerator({
+					projectName,
+					opts
+				})
+				generator.run(args);
 			}
 		);
 		await this.program.parseAsync();
