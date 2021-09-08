@@ -11,7 +11,7 @@ export class SuperCli {
 	private program!: Command
 	constructor() {
 		this.program = program;
-		this.program.name('super-cli')
+		this.program.name('project-generator');
 	}
 
 	makeCommand(

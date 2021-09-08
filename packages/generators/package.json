@@ -16,7 +16,10 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --check src/**/*.ts",
     "format:fix": "prettier --write .",
-    "release-it": "release-it"
+    "prepublish": "npm run build",
+    "release": "release-it",
+    "release:minor": "release-it --minor",
+    "release:major": "release-it --major"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.0",

@@ -1,4 +1,4 @@
-import { SuperCli } from './super-cli';
+import { SuperCli } from './cli';
 import consola from 'consola';
 
 export async function runCLI(
@@ -7,7 +7,7 @@ export async function runCLI(
 	try {
 		const cli = new SuperCli();
 		await cli.run(args);
-	} catch (err) {
+	} catch (err: any) {
 		consola.error(err);
 		process.exit(err.code || err.message);
 	}
