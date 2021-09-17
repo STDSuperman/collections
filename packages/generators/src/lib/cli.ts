@@ -1,6 +1,6 @@
 import { program } from 'commander'
 import type { Command } from 'commander'
-import { tsGenerator } from './pro-generator';
+import { ProjectGenerator } from './pro-generator';
 import {
 	ICommandConfig,
 	ICommandOption,
@@ -72,16 +72,16 @@ export class SuperCli {
 			alias: 'g',
 			description: 'Initialize a new ts/js project.',
 			argsDescription: {
-				'project-name': 'The name of the entire project'
+				'project-name': 'The name of the entire project.'
 			},
 			usage: '',
 			opts: [{
 				flags: '-t, --template [type]',
-				description: 'add the specified template type for project',
+				description: 'Add the specified template type for project.',
 				defaultValue: 'ts'
 			}, {
 				flags: '-o, --overwrite',
-				description: 'overwrite exist file',
+				description: 'Overwrite exist file.',
 				defaultValue: false
 			}]
 		}
@@ -92,7 +92,7 @@ export class SuperCli {
 				projectName: string,
 				opts: IGenerateCommandOptions
 			) => {
-				const generator = new tsGenerator({
+				const generator = new ProjectGenerator({
 					projectName,
 					opts
 				})

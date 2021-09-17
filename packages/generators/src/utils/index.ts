@@ -55,10 +55,12 @@ export const getPackageManager = (): IPackageManagerMap | null => {
 	};
 	for (const key in pkgManagerLockFileMap) {
 		const pkgManagerKey = key as IPackageManagerMap;
-		if (Object.prototype.hasOwnProperty.call(pkgManagerLockFileMap, key)) {
-			const lockFile = pkgManagerLockFileMap[key as IPackageManagerMap];
+		if (Object.prototype.hasOwnProperty.call(
+			pkgManagerLockFileMap, pkgManagerKey
+		)) {
+			const lockFile = pkgManagerLockFileMap[pkgManagerKey];
 			if (checkLocalPkgManagerExists(lockFile)) {
-				return key as IPackageManagerMap;
+				return pkgManagerKey;
 			} else if (checkGlobalPkgManagerVersion(pkgManagerKey)) {
 				return pkgManagerKey;
 			};

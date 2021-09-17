@@ -30,7 +30,7 @@ export type ICommandOption = string | {
 	options?: Options<string>;
 }
 
-export class tsGenerator {
+export class ProjectGenerator {
 	private projectName: string;
 	private opts: IGenerateCommandOptions
 	private templateFileList: string[] = [];

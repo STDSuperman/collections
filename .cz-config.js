@@ -5,6 +5,7 @@ module.exports = {
 		{ value: ':pencil: docs', name: 'docs:     文档相关修改' },
 		{ value: ':construction: chore', name: 'chore:    正在建设中' },
 		{ value: ':bug: fix', name: 'fix:      修复bug' },
+		{ value: ':art: style', name: 'art:      代码样式优化' },
 		{ value: ':wrench: chore', name: 'chore:    修改配置' },
 		{ value: ':ambulance: fix', name: 'fix:      紧急修正' },
 		{ value: ':zap: perf', name: 'perf:     性能优化' },
