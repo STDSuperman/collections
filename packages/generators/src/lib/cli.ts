@@ -8,7 +8,7 @@ import {
 } from './types'
 
 export class SuperCli {
-	private program!: Command
+	private program: Command
 	constructor() {
 		this.program = program;
 		this.program.name('project-generator');
