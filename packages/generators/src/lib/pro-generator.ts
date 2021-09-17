@@ -12,7 +12,7 @@ import { resolve as pathResolve, join as pathJoin } from 'path';
 import { mkdirpSync } from 'fs-extra';
 import consola from 'consola';
 import { getExecCommand, getInstallCommand } from '../utils';
-import { ConfigFileGenerator } from './config-file-generator';
+import { ConfigFileGenerator } from './template-file-generator';
 export interface IGeneratorOptions {
 	projectName: string;
 	opts: IGenerateCommandOptions;
@@ -42,11 +42,31 @@ export class ProjectGenerator {
 	}
 
 	run(args: string[]) {
+		if (this.runtimeOptions.opts.onlyConfig) {
+			this.handleOnlyInitConfig();
+			return;
+		}
 		this.checkProjectNameExist();
-		this.runInitCommand();
 		this.makeInitDirAndFile();
+		this.initConfigFile();
+	}
+
+	initConfigFile() {
 		const configFileGenerator = new ConfigFileGenerator(this.runtimeOptions);
-		configFileGenerator.start();
+		configFileGenerator.start(
+			pathResolve(
+				process.cwd(),
+				this.runtimeOptions.projectName
+			)
+		);
+		this.runInitCommand();
+	}
+
+	handleOnlyInitConfig() {
+		const configFileGenerator = new ConfigFileGenerator(this.runtimeOptions);
+		configFileGenerator.start(
+			pathResolve(process.cwd())
+		);
 	}
 
 	checkProjectNameExist() {

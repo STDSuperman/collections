@@ -67,6 +67,14 @@ export class SuperCli {
 	}
 
 	async run(args: Array<string>) {
+		this.registerCommand(args);
+		await this.program.parseAsync();
+	}
+	
+	registerCommand(args: Array<string>) {
+		this.registerGenerateNewAppCommand(args);
+	}
+	registerGenerateNewAppCommand(args: Array<string>) {
 		const generateNewAppCommandConfig: ICommandConfig = {
 			name: 'generate <project-name>',
 			alias: 'g',
@@ -83,9 +91,12 @@ export class SuperCli {
 				flags: '-o, --overwrite',
 				description: 'Overwrite exist file.',
 				defaultValue: false
+			}, {
+				flags: '-oc, --only-config',
+				description: 'Only configuration files are generated',
+				defaultValue: false
 			}]
 		}
-
 		this.makeCommand(
 			generateNewAppCommandConfig,
 			(
@@ -99,6 +110,5 @@ export class SuperCli {
 				generator.run(args);
 			}
 		);
-		await this.program.parseAsync();
 	}
 }

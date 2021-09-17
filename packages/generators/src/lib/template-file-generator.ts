@@ -3,15 +3,17 @@ import {
 	writeFileSync,
 	readdirSync
 } from 'fs';
-import { resolve as pathResolve, join as pathJoin } from 'path';
+import { existsSync } from 'fs-extra'
+import { resolve as pathResolve } from 'path';
 import { compile as ejsCompile } from 'ejs';
 import { IGeneratorOptions, IWriteFileInfo } from './pro-generator';
+import consola from 'consola';
 
 export class ConfigFileGenerator {
 	private defaultFileList: Array<string> = [];
 	private tsConfigFileList: Array<string> = [];
 	private isTsTemplate = false;
-	private outputDirPath: string;
+	private outputPath = '';
 	private filterFileList = ['.DS_Store']
 	private defaultFileDir = '';
 	private tsRelateFileDir = '';
@@ -20,13 +22,10 @@ export class ConfigFileGenerator {
 		public runtimeOpts: IGeneratorOptions
 	) {
 		this.setFileListDir();
-		this.outputDirPath = pathResolve(
-			process.cwd(),
-			this.runtimeOpts.projectName
-		);
 		this.isTsTemplate = runtimeOpts.opts.template === 'ts';
 	}
-	start() {
+	start(outputPath: string) {
+		this.outputPath = outputPath;
 		this.compileFileList(this.defaultFileList, this.defaultFileDir);
 		if (this.isTsTemplate) {
 			this.compileFileList(this.tsConfigFileList, this.tsRelateFileDir);
@@ -53,6 +52,15 @@ export class ConfigFileGenerator {
 		fileList.forEach(
 			filename => {
 				const fullTemplateFilePath = pathResolve(dir, filename)
+				const resultFilename = this.removeTemplateEngineExt(filename);
+				const currentFileOutputPath = pathResolve(
+					this.outputPath,
+					resultFilename
+				);
+				if (existsSync(currentFileOutputPath) && !this.runtimeOpts.opts.overwrite) {
+					consola.info(`file exists: ${resultFilename}`)
+					return;
+				}
 				const templateFileContent = readFileSync(
 					fullTemplateFilePath,
 					'utf8'
@@ -61,21 +69,11 @@ export class ConfigFileGenerator {
 						projectName: this.runtimeOpts.projectName,
 						isTsTemplate: this.isTsTemplate
 					})
-				this.writeFileTree({
-					filename: this.removeTemplateEngineExt(filename),
-					value: compiledFileContent
-				});
+				writeFileSync(currentFileOutputPath, compiledFileContent);
 			}
 		)
 	}
 	removeTemplateEngineExt(filename: string) {
 		return filename.slice(0, -this.templateEnginExtLength);
-	}
-	writeFileTree(fileInfo: IWriteFileInfo) {
-		const outputFilePath = pathJoin(
-			this.outputDirPath,
-			fileInfo.filename
-		);
-		writeFileSync(outputFilePath, fileInfo.value);
 	}
 }
