@@ -6,10 +6,10 @@ import {
 import { existsSync } from 'fs-extra'
 import { resolve as pathResolve } from 'path';
 import { compile as ejsCompile } from 'ejs';
-import { IGeneratorOptions, IWriteFileInfo } from './pro-generator';
+import { IGeneratorOptions } from './generator';
 import consola from 'consola';
 
-export class ConfigFileGenerator {
+export class TemplateFileGenerator {
 	private defaultFileList: Array<string> = [];
 	private tsConfigFileList: Array<string> = [];
 	private isTsTemplate = false;

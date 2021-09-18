@@ -12,7 +12,7 @@ import { resolve as pathResolve, join as pathJoin } from 'path';
 import { mkdirpSync } from 'fs-extra';
 import consola from 'consola';
 import { getExecCommand, getInstallCommand } from '../utils';
-import { ConfigFileGenerator } from './template-file-generator';
+import { TemplateFileGenerator } from './template-file-generator';
 export interface IGeneratorOptions {
 	projectName: string;
 	opts: IGenerateCommandOptions;
@@ -31,42 +31,41 @@ export type ICommandOption = string | {
 export class ProjectGenerator {
 	private projectName: string;
 	private opts: IGenerateCommandOptions
-	private outputDirPath: string;
+	private outputDirPath = '';
+	private cwd: string;
 	constructor(
 		public runtimeOptions: IGeneratorOptions
 	) {
 		this.projectName = runtimeOptions.projectName;
 		this.opts = runtimeOptions.opts;
-		const cwd = process.cwd();
-		this.outputDirPath = pathResolve(cwd, this.projectName);
+		this.cwd = process.cwd();
 	}
 
 	run(args: string[]) {
 		if (this.runtimeOptions.opts.onlyConfig) {
+			this.outputDirPath = pathResolve(this.cwd);
 			this.handleOnlyInitConfig();
 			return;
 		}
+		this.outputDirPath = pathResolve(this.cwd, this.projectName);
 		this.checkProjectNameExist();
 		this.makeInitDirAndFile();
 		this.initConfigFile();
 	}
 
 	initConfigFile() {
-		const configFileGenerator = new ConfigFileGenerator(this.runtimeOptions);
-		configFileGenerator.start(
-			pathResolve(
-				process.cwd(),
-				this.runtimeOptions.projectName
-			)
-		);
+		const tfg = new TemplateFileGenerator(this.runtimeOptions);
+		tfg.start(pathResolve(
+			process.cwd(),
+			this.runtimeOptions.projectName
+		));
 		this.runInitCommand();
 	}
 
 	handleOnlyInitConfig() {
-		const configFileGenerator = new ConfigFileGenerator(this.runtimeOptions);
-		configFileGenerator.start(
-			pathResolve(process.cwd())
-		);
+		const tfg = new TemplateFileGenerator(this.runtimeOptions);
+		tfg.start(pathResolve(process.cwd()));
+		this.runInitCommand();
 	}
 
 	checkProjectNameExist() {
@@ -94,17 +93,27 @@ export class ProjectGenerator {
 	async runInitCommand() {
 		const execCommand = getExecCommand();
 		try {
-			await this.batchExecCommandsSyncWithoutOptions([
-				`git init`,
+			const commandList = [
 				`${getInstallCommand()}`,
 				`${execCommand} husky-pre-commit`,
 				`${execCommand} husky-commit-msg`
-			], {
-				cwd: this.outputDirPath
-			})
+			]
+			if (!this.hasGitEnvironment()) {
+				commandList.unshift(`git init`)
+			}
+			await this.batchExecCommandsSyncWithoutOptions(
+				commandList,
+				{
+					cwd: this.outputDirPath
+				}
+			)
 		} catch (err) {
 			consola.error(err);
 		}
+	}
+
+	hasGitEnvironment() {
+		return existsSync(pathResolve(this.outputDirPath, '.git'))
 	}
 
 	async batchExecCommandsSyncWithoutOptions(
