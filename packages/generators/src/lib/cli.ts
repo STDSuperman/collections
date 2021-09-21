@@ -1,6 +1,6 @@
 import { program } from 'commander'
 import type { Command } from 'commander'
-import { ProjectGenerator } from './pro-generator';
+import { ProjectGenerator } from './generator';
 import {
 	ICommandConfig,
 	ICommandOption,

@@ -1,4 +1,8 @@
+import jsonfile from 'jsonfile';
 
-export default function merge() {
-
+export default function merge(
+	packageFilePathArr: string[],
+	needSort: boolean = false
+) {
+	
 }

@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/ejs": "^3.1.0",
     "@types/fs-extra": "^9.0.12",
+    "@types/jsonfile": "^6.0.1",
     "@types/node": "^16.7.5",
     "commander": "^8.1.0",
     "consola": "^2.15.3",
@@ -35,7 +36,8 @@
     "ejs": "^3.1.6",
     "execa": "^5.1.1",
     "fs-extra": "^10.0.0",
-    "import-local": "^3.0.2"
+    "import-local": "^3.0.2",
+    "jsonfile": "^6.1.0"
   },
   "publishConfig": {
     "access": "public"
