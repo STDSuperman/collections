@@ -42,6 +42,7 @@ export class ProjectGenerator {
 	}
 
 	run(args: string[]) {
+		// 处理补充配置命令
 		if (this.runtimeOptions.opts.onlyConfig) {
 			this.outputDirPath = pathResolve(this.cwd);
 			this.handleOnlyInitConfig();

@@ -8,7 +8,8 @@ import { resolve as pathResolve } from 'path';
 import { compile as ejsCompile } from 'ejs';
 import { IGeneratorOptions } from './generator';
 import consola from 'consola';
-
+import mergePkg, { ReadType } from './plugins/package-json-merge'
+import { sortCode } from '../utils/index'
 export class TemplateFileGenerator {
 	private defaultFileList: Array<string> = [];
 	private tsConfigFileList: Array<string> = [];
@@ -57,10 +58,6 @@ export class TemplateFileGenerator {
 					this.outputPath,
 					resultFilename
 				);
-				if (existsSync(currentFileOutputPath) && !this.runtimeOpts.opts.overwrite) {
-					consola.info(`file exists: ${resultFilename}`)
-					return;
-				}
 				const templateFileContent = readFileSync(
 					fullTemplateFilePath,
 					'utf8'
@@ -69,11 +66,50 @@ export class TemplateFileGenerator {
 						projectName: this.runtimeOpts.projectName,
 						isTsTemplate: this.isTsTemplate
 					})
+				if (existsSync(currentFileOutputPath)) {
+					this.handleFileExist(
+						resultFilename,
+						currentFileOutputPath,
+						compiledFileContent
+					)
+					return;
+				}
 				writeFileSync(currentFileOutputPath, compiledFileContent);
 			}
 		)
 	}
-	removeTemplateEngineExt(filename: string) {
+
+	handleFileExist(
+		filename: string,
+		currentFileOutputPath: string,
+		compiledFileContent: string
+	) {
+		if (
+			existsSync(currentFileOutputPath)
+			&& !this.runtimeOpts.opts.overwrite
+			&& filename !== 'package.json'
+		) {
+			consola.info(`file exists: ${filename}`)
+			return;
+		} else if (existsSync(currentFileOutputPath)) {
+			// 处理合并package.json文件
+			const fileContent = mergePkg(
+				[currentFileOutputPath, {
+					type: ReadType.CONTENT,
+					content: compiledFileContent
+				}]
+			);
+			writeFileSync(currentFileOutputPath, sortCode(
+					JSON.stringify(fileContent),
+					{
+						parser: 'json'
+					}
+				)
+			);
+			return;
+		}
+	}
+ 	removeTemplateEngineExt(filename: string) {
 		return filename.slice(0, -this.templateEnginExtLength);
 	}
 }
