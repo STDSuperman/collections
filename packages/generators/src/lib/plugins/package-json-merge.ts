@@ -1,4 +1,5 @@
 import jsonfile from 'jsonfile';
+import { merge as ldMerge } from 'lodash';
 
 export enum ReadType {
 	PATH = 'path',
@@ -30,7 +31,7 @@ export default function merge(
 		} else if (item.type === ReadType.CONTENT) {
 			json = JSON.parse(item.content);
 		}
-		return Object.assign(result, json);
+		return ldMerge(result, json);
 	});
 	return result;
 }

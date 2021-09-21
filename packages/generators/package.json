@@ -25,6 +25,7 @@
     "@types/ejs": "^3.1.0",
     "@types/fs-extra": "^9.0.12",
     "@types/jsonfile": "^6.0.1",
+    "@types/lodash": "^4.14.173",
     "@types/node": "^16.7.5",
     "@types/prettier": "^2.3.2",
     "commander": "^8.1.0",
@@ -39,6 +40,7 @@
     "fs-extra": "^10.0.0",
     "import-local": "^3.0.2",
     "jsonfile": "^6.1.0",
+    "lodash": "^4.17.21",
     "prettier": "^2.4.1"
   },
   "publishConfig": {
