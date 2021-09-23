@@ -102,7 +102,7 @@ export class ProjectGenerator {
 			if (!this.hasGitEnvironment()) {
 				commandList.unshift(`git init`)
 			}
-			await this.batchExecCommandsSyncWithoutOptions(
+			await this.batchExecCommandsSyncWithCommonOptions(
 				commandList,
 				{
 					cwd: this.outputDirPath
@@ -117,7 +117,7 @@ export class ProjectGenerator {
 		return existsSync(pathResolve(this.outputDirPath, '.git'))
 	}
 
-	async batchExecCommandsSyncWithoutOptions(
+	async batchExecCommandsSyncWithCommonOptions(
 		commandList: ICommandOption[],
 		commonOptions?: Options
 	) {
