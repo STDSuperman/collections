@@ -2,7 +2,7 @@ module.exports = {
   <%_ if (isTsTemplate) { _%>
   parser: '@typescript-eslint/parser',
   <%_ } else { _%>
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   <%_ } _%>
   parserOptions: {
     sourceType: 'module',
