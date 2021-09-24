@@ -29,6 +29,4 @@ jobs:
       - name: Run a multi-line script
         run: |
           npm i
-          npx lerna bootstrap
           npm run lint
-          npm run publush
