@@ -9,7 +9,7 @@ import { compile as ejsCompile } from 'ejs';
 import { IGeneratorOptions } from './generator';
 import consola from 'consola';
 import mergePkg, { ReadType } from './plugins/package-json-merge'
-import { sortCode } from '../utils/index'
+import { formatCode } from '../utils/index'
 export class TemplateFileGenerator {
 	private defaultFileList: Array<string> = [];
 	private tsConfigFileList: Array<string> = [];
@@ -99,7 +99,7 @@ export class TemplateFileGenerator {
 					content: compiledFileContent
 				}]
 			);
-			writeFileSync(currentFileOutputPath, sortCode(
+			writeFileSync(currentFileOutputPath, formatCode(
 					JSON.stringify(fileContent),
 					{
 						parser: 'json'

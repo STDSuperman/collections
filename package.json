@@ -5,6 +5,7 @@
   "repository": "https://github.com/STDSuperman/cli.git",
   "author": "STDSuperman <2750556766@qq.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "postinstall": "husky install",
     "prepare": "husky install",
@@ -13,7 +14,8 @@
     "check": "tsc --noEmit",
     "lint:fix": "eslint --fix .",
     "format": "prettier --check src/**/*.ts",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "publish": "lerna publish from-package --no-verify-access"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

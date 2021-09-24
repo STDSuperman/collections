@@ -1,7 +1,7 @@
 import prettier from 'prettier';
 import type { Options } from 'prettier';
 
-export function sortCode(
+export function formatCode(
 	code: string,
 	formatOpts?: Options
 ) {
