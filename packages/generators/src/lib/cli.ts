@@ -14,10 +14,7 @@ export class SuperCli {
 		this.program.name('project-generator');
 	}
 
-	makeCommand(
-		commandOpts: ICommandConfig,
-		cb: (...args: any[]) => void
-	) {
+	makeCommand(commandOpts: ICommandConfig, cb: (...args: any[]) => void ) {
 		if (this.checkCommandExist(commandOpts)) return;
 		const command = this.program.command(commandOpts.name, {
 			noHelp: commandOpts.noHelp,
@@ -42,10 +39,7 @@ export class SuperCli {
 		return command;
 	}
 
-	makeOptions(
-		opts: ICommandOption[] = [],
-		command: Command
-	) {
+	makeOptions(opts: ICommandOption[] = [], command: Command) {
 		opts?.forEach(opt => {
 			command.option(
 				opt.flags,
@@ -55,9 +49,7 @@ export class SuperCli {
 		})
 	}
 
-	checkCommandExist(
-		commandOpts: ICommandConfig
-	) {
+	checkCommandExist(commandOpts: ICommandConfig) {
 		return !!this.program.commands.find(command => {
 			return command.name() === commandOpts.name.split(' ')[0]
 			|| Array.isArray(commandOpts.alias)
@@ -97,12 +89,10 @@ export class SuperCli {
 				defaultValue: false
 			}]
 		}
-		this.makeCommand(
-			generateNewAppCommandConfig,
-			(
+		this.makeCommand(generateNewAppCommandConfig, (
 				projectName: string,
 				opts: IGenerateCommandOptions
-			) => {
+		) => {
 				const generator = new ProjectGenerator({
 					projectName,
 					opts
