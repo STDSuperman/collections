@@ -65,16 +65,19 @@ export class TemplateFileGenerator {
 				const compiledFileContent = ejsCompile(templateFileContent)({
 						projectName: this.runtimeOpts.projectName,
 						isTsTemplate: this.isTsTemplate
-					})
+				})
 				if (existsSync(currentFileOutputPath)) {
 					this.handleFileExist(
 						resultFilename,
 						currentFileOutputPath,
 						compiledFileContent
 					)
-					return;
 				}
-				writeFileSync(currentFileOutputPath, compiledFileContent);
+				writeFileSync(currentFileOutputPath, 
+					resultFilename === 'package.json'
+					?  formatCode(compiledFileContent, { parser: 'json' } )
+					: compiledFileContent
+				);
 			}
 		)
 	}
@@ -84,14 +87,7 @@ export class TemplateFileGenerator {
 		currentFileOutputPath: string,
 		compiledFileContent: string
 	) {
-		if (
-			existsSync(currentFileOutputPath)
-			&& !this.runtimeOpts.opts.overwrite
-			&& filename !== 'package.json'
-		) {
-			consola.info(`file exists: ${filename}`)
-			return;
-		} else if (existsSync(currentFileOutputPath)) {
+		if (filename === 'package.json' && !this.runtimeOpts.opts.overwrite) {
 			// 处理合并package.json文件
 			const fileContent = mergePkg(
 				[currentFileOutputPath, {
@@ -101,12 +97,12 @@ export class TemplateFileGenerator {
 			);
 			writeFileSync(currentFileOutputPath, formatCode(
 					JSON.stringify(fileContent),
-					{
-						parser: 'json'
-					}
+					{ parser: 'json' }
 				)
 			);
 			return;
+		} else {
+			consola.info(`file exists: ${filename}`)
 		}
 	}
  	removeTemplateEngineExt(filename: string) {

@@ -13,9 +13,7 @@ export type IPkgInfo = {
 
 export type IPkgInputType = string | IPkgInfo;
 
-const merge = (
-	packageFilePathArr: IPkgInputType[]
-) => {
+const merge = (packageFilePathArr: IPkgInputType[]) => {
 	const result = {};
 	packageFilePathArr.forEach((item: IPkgInputType) => {
 		let json = {};

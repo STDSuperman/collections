@@ -18,6 +18,8 @@
     "format:fix": "prettier --write .",
     "prepublish": "npm run build",
     "release": "release-it",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable",
     "release:minor": "release-it --minor",
     "release:major": "release-it --major"
   },
@@ -30,6 +32,7 @@
     "@types/prettier": "^2.3.2",
     "commander": "^8.1.0",
     "consola": "^2.15.3",
+    "pinst": "^2.1.6",
     "release-it": "^14.11.5",
     "rimraf": "^3.0.2",
     "super-cli": "^1.0.1"
@@ -41,7 +44,8 @@
     "import-local": "^3.0.2",
     "jsonfile": "^6.1.0",
     "lodash": "^4.17.21",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "tslib": "^2.3.1"
   },
   "publishConfig": {
     "access": "public"

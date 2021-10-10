@@ -27,8 +27,8 @@
 		"cz-customizable": "^6.3.0",
 		"eslint": "^7.32.0",
 		"husky": "^7.0.2",
-	  	"prettier": "^2.3.2",
-	  	<%_ if (isTsTemplate) { _%>
+	  "prettier": "^2.3.2",
+	  <%_ if (isTsTemplate) { _%>
 		"typescript": "^4.4.2",
 		"@typescript-eslint/eslint-plugin": "^4.29.3",
 		"@typescript-eslint/parser": "^4.29.3",
@@ -36,13 +36,14 @@
 		"@babel/eslint-parser": "^7.15.7",
 		"@babel/core": "^7.15.5",
 		<%_ } _%> 
-	  	"rimraf": "^3.0.2",
-		"eslint-plugin-import": "^2.24.2"
+	  "rimraf": "^3.0.2",
+		"eslint-plugin-import": "^2.24.2",
+		"tslib": "^2.3.1"
 	},
 	"config": {
 	  "commitizen": {
-		"path": "node_modules/cz-customizable"
-	  }
+			"path": "node_modules/cz-customizable"
+		}
 	}
-  }
+}
   
