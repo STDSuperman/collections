@@ -7,7 +7,7 @@ export interface ICommandConfig {
 	description?: string;
 	usage?: string;
 	argsDescription?: Record<string, string>;
-	opts?: ICommandOption[]
+	opts?: ICommandOption[];
 }
 
 export interface ICommandOption {

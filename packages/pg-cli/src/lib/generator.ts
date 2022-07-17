@@ -1,13 +1,13 @@
 
-import { IGenerateCommandOptions } from './types'
-import { 
-	writeFileSync,
-	existsSync,
+import { IGenerateCommandOptions } from './types';
+import {
+  writeFileSync,
+  existsSync,
 } from 'fs';
 import {
-	command as execCommandAsync,
-} from 'execa'
-import type { Options } from 'execa'
+  command as execCommandAsync,
+} from 'execa';
+import type { Options } from 'execa';
 import { resolve as pathResolve, join as pathJoin } from 'path';
 import { mkdirpSync } from 'fs-extra';
 import consola from 'consola';
@@ -26,7 +26,7 @@ export interface IWriteFileInfo {
 export type ICommandOption = string | {
 	command: string;
 	options?: Options<string>;
-}
+};
 
 export class ProjectGenerator {
 	private projectName: string;
@@ -34,109 +34,107 @@ export class ProjectGenerator {
 	private outputDirPath = '';
 	private cwd: string;
 	constructor(
-		public runtimeOptions: IGeneratorOptions
+		public runtimeOptions: IGeneratorOptions,
 	) {
-		this.projectName = runtimeOptions.projectName;
-		this.opts = runtimeOptions.opts;
-		this.cwd = process.cwd();
+	  this.projectName = runtimeOptions.projectName;
+	  this.opts = runtimeOptions.opts;
+	  this.cwd = process.cwd();
 	}
 
 	run(args: string[]) {
-		// 处理补充配置命令
-		if (this.runtimeOptions.opts.onlyConfig) {
-			this.outputDirPath = pathResolve(this.cwd);
-			this.handleOnlyInitConfig();
-			return;
-		}
-		this.outputDirPath = pathResolve(this.cwd, this.projectName);
-		this.checkProjectNameExist();
-		this.makeInitDirAndFile();
-		this.initConfigFile();
+	  // 处理补充配置命令
+	  if (this.runtimeOptions.opts.onlyConfig) {
+	    this.outputDirPath = pathResolve(this.cwd);
+	    this.handleOnlyInitConfig();
+	    return;
+	  }
+	  this.outputDirPath = pathResolve(this.cwd, this.projectName);
+	  this.checkProjectNameExist();
+	  this.makeInitDirAndFile();
+	  this.initConfigFile();
 	}
 
 	initConfigFile() {
-		const tfg = new TemplateFileGenerator(this.runtimeOptions);
-		tfg.start(pathResolve(
-			process.cwd(),
-			this.runtimeOptions.projectName
-		));
-		this.runInitCommand();
+	  const tfg = new TemplateFileGenerator(this.runtimeOptions);
+	  tfg.start(pathResolve(
+	    process.cwd(),
+	    this.runtimeOptions.projectName,
+	  ));
+	  this.runInitCommand();
 	}
 
 	handleOnlyInitConfig() {
-		const tfg = new TemplateFileGenerator(this.runtimeOptions);
-		tfg.start(pathResolve(process.cwd()));
-		this.runInitCommand();
+	  const tfg = new TemplateFileGenerator(this.runtimeOptions);
+	  tfg.start(pathResolve(process.cwd()));
+	  this.runInitCommand();
 	}
 
 	checkProjectNameExist() {
-		if (existsSync(this.outputDirPath)) {
-			if (this.opts.overwrite) return;
-			consola.error('project name is already exists')
-			process.exit(1)
-		} else {
-			mkdirpSync(this.outputDirPath);
-		}
+	  if (existsSync(this.outputDirPath)) {
+	    if (this.opts.overwrite) return;
+	    consola.error('project name is already exists');
+	    process.exit(1);
+	  } else {
+	    mkdirpSync(this.outputDirPath);
+	  }
 	}
 
 	makeInitDirAndFile() {
-		mkdirpSync(pathResolve(this.outputDirPath, 'src'));
-		writeFileSync(
-			pathResolve(
-				this.outputDirPath,
-				'src',
-				'index.' + this.opts.template
-			),
-			''
-		);
+	  mkdirpSync(pathResolve(this.outputDirPath, 'src'));
+	  writeFileSync(
+	    pathResolve(
+	      this.outputDirPath,
+	      'src',
+	      `index.${this.opts.template}`,
+	    ),
+	    '',
+	  );
 	}
 
 	async runInitCommand() {
-		const execCommand = getExecCommand();
-		try {
-			const commandList = [
+	  const execCommand = getExecCommand();
+	  try {
+	    const commandList = [
 				`${getInstallCommand()}`,
 				`${execCommand} husky-pre-commit`,
-				`${execCommand} husky-commit-msg`
-			]
-			if (!this.hasGitEnvironment()) {
-				commandList.unshift(`git init`)
-			}
-			await this.batchExecCommandsSyncWithCommonOptions(
-				commandList,
-				{
-					cwd: this.outputDirPath
-				}
-			)
-		} catch (err) {
-			consola.error(err);
-		}
+				`${execCommand} husky-commit-msg`,
+	    ];
+	    if (!this.hasGitEnvironment()) {
+	      commandList.unshift('git init');
+	    }
+	    await this.batchExecCommandsSyncWithCommonOptions(
+	      commandList,
+	      {
+	        cwd: this.outputDirPath,
+	      },
+	    );
+	  } catch (err) {
+	    consola.error(err);
+	  }
 	}
 
 	hasGitEnvironment() {
-		return existsSync(pathResolve(this.outputDirPath, '.git'))
+	  return existsSync(pathResolve(this.outputDirPath, '.git'));
 	}
 
 	async batchExecCommandsSyncWithCommonOptions(
-		commandList: ICommandOption[],
-		commonOptions?: Options
+	  commandList: ICommandOption[],
+	  commonOptions?: Options,
 	) {
-		let curIdx = 0;
-		while (curIdx < commandList.length) {
-			const commandInfo = commandList[curIdx];
-			const commandResult = execCommandAsync(
-				typeof commandInfo === 'string' 
-					? commandInfo
-					: commandInfo.command,
-				commonOptions
-					? commonOptions
-					: typeof commandInfo === 'string'
-					? undefined
-					: commandInfo?.options
-			);
-			commandResult.stdout?.pipe(process.stdout);
-			await commandResult;
-			curIdx++;
-		}
+	  let curIdx = 0;
+	  while (curIdx < commandList.length) {
+	    const commandInfo = commandList[curIdx];
+	    const commandResult = execCommandAsync(
+	      typeof commandInfo === 'string'
+	        ? commandInfo
+	        : commandInfo.command,
+	      commonOptions || (typeof commandInfo === 'string'
+	          ? undefined
+	          : commandInfo?.options),
+	    );
+	    commandResult.stdout?.pipe(process.stdout);
+	    await commandResult;
+	    curIdx++;
+	  }
 	}
 }

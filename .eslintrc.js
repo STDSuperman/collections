@@ -6,7 +6,15 @@ module.exports = {
   env: {
     node: true
   },
-  plugins: ["@typescript-eslint"],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript'
+  ],
+  settings: {
+    'import/resolver': {
+      node: { extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx', '.d.ts'] },
+    },
+  },
   rules: {
     'no-unused-vars': [
       1,
