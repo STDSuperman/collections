@@ -8,8 +8,8 @@ import { resolve as pathResolve } from 'path';
 import { compile as ejsCompile } from 'ejs';
 import { IGeneratorOptions } from './generator';
 import consola from 'consola';
-import mergePkg, { ReadType } from './plugins/package-json-merge'
-import { formatCode } from '../utils/index'
+import { formatCode, mergePkg, ReadType } from '../utils/index'
+
 export class TemplateFileGenerator {
 	private defaultFileList: Array<string> = [];
 	private tsConfigFileList: Array<string> = [];

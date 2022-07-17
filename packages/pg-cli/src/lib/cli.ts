@@ -66,6 +66,7 @@ export class SuperCli {
 	registerCommand(args: Array<string>) {
 		this.registerGenerateNewAppCommand(args);
 	}
+	
 	registerGenerateNewAppCommand(args: Array<string>) {
 		const generateNewAppCommandConfig: ICommandConfig = {
 			name: 'generate <project-name>',

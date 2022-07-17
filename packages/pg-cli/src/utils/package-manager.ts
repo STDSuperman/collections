@@ -54,5 +54,5 @@ export const getExecCommand = (): string | null => {
 
 export const getInstallCommand = (): string | null => {
 	const pkgManager = getPackageManager();
-	return pkgManager === 'npm' ? 'npm install' : pkgManager;
+	return pkgManager?.includes('npm') ? `${pkgManager} install` : pkgManager;
 };

@@ -5,8 +5,9 @@
   "license": "MIT",
   "bin": {
     "project-generator": "./bin/cli.js",
-    "pg": "./bin/cli.js"
+    "pg-cli": "./bin/cli.js"
   },
+  "files": ["dist/"],
   "scripts": {
     "build": "npm run clean && tsc --build && npm run copy",
     "build:watch": "tsc --watch",
@@ -23,30 +24,6 @@
     "postpublish": "pinst --enable",
     "release:minor": "release-it --minor",
     "release:major": "release-it --major"
-  },
-  "devDependencies": {
-    "@types/ejs": "^3.1.0",
-    "@types/fs-extra": "^9.0.12",
-    "@types/jsonfile": "^6.0.1",
-    "@types/lodash": "^4.14.173",
-    "@types/node": "^16.7.5",
-    "@types/prettier": "^2.3.2",
-    "pinst": "^2.1.6",
-    "release-it": "^14.11.5",
-    "rimraf": "^3.0.2",
-    "super-cli": "^1.0.1"
-  },
-  "dependencies": {
-    "commander": "^8.2.0",
-    "consola": "^2.15.3",
-    "ejs": "^3.1.6",
-    "execa": "^5.1.1",
-    "fs-extra": "^10.0.0",
-    "import-local": "^3.0.2",
-    "jsonfile": "^6.1.0",
-    "lodash": "^4.17.21",
-    "prettier": "^2.4.1",
-    "tslib": "^2.3.1"
   },
   "publishConfig": {
     "access": "public"

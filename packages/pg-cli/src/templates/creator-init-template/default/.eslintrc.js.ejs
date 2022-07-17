@@ -1,0 +1,14 @@
+module.exports = {
+  env: {
+    node: true,
+    browser: true
+  },
+  extends: [
+  <%_ if (isTsTemplate) { _%>
+    '@applint/eslint-config/typescript',
+  <%_ } _%>
+    '@applint/eslint-config'
+  ],
+  plugins: [],
+  overrides: []
+}
