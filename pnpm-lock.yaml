@@ -49,6 +49,7 @@ importers:
       import-local: registry.npmjs.org/import-local/3.0.2
       jsonfile: registry.npmjs.org/jsonfile/6.1.0
       lodash: registry.npmjs.org/lodash/4.17.21
+      prettier: registry.npmjs.org/prettier/2.4.1
       tslib: registry.npmjs.org/tslib/2.3.1
     devDependencies:
       '@applint/eslint-config': registry.npmjs.org/@applint/eslint-config/1.1.8_d248e4aa00161d5ab27061476515a7d7
@@ -73,7 +74,6 @@ importers:
       lerna: registry.npmjs.org/lerna/4.0.0
       pg-cli: registry.npmjs.org/pg-cli/2.0.1
       pinst: registry.npmjs.org/pinst/2.1.6
-      prettier: registry.npmjs.org/prettier/2.4.1
       release-it: registry.npmjs.org/release-it/14.11.5
       rimraf: registry.npmjs.org/rimraf/3.0.2
       ts-node-dev: registry.npmjs.org/ts-node-dev/1.1.8_typescript@4.7.4
@@ -89,6 +89,7 @@ importers:
       import-local: 3.0.2
       jsonfile: 6.1.0
       lodash: 4.17.21
+      prettier: 2.4.1
       tslib: 2.3.1
     dependencies:
       commander: registry.npmjs.org/commander/8.2.0
@@ -99,6 +100,7 @@ importers:
       import-local: registry.npmjs.org/import-local/3.0.2
       jsonfile: registry.npmjs.org/jsonfile/6.1.0
       lodash: registry.npmjs.org/lodash/4.17.21
+      prettier: registry.npmjs.org/prettier/2.4.1
       tslib: registry.npmjs.org/tslib/2.3.1
 
   packages/project-generator-cli/sample:
@@ -8028,7 +8030,7 @@ packages:
     version: 2.4.1
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
+    dev: false
 
   registry.npmjs.org/process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz}
