@@ -6,9 +6,6 @@
   "author": "STDSuperman <2750556766@qq.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "postinstall": "husky install",
     "prepare": "husky install",
@@ -17,8 +14,7 @@
     "check": "tsc --noEmit",
     "lint:fix": "eslint --fix .",
     "format": "prettier --check src/**/*.ts",
-    "format:fix": "prettier --write .",
-    "publish": "lerna publish from-package --no-verify-access"
+    "format:fix": "prettier --write ."
   },
   "devDependencies": {
     "@applint/eslint-config": "^1.1.8",
@@ -30,6 +26,8 @@
     "@types/lodash": "4.14.173",
     "@types/node": "16.7.5",
     "@types/prettier": "2.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
     "commitizen": "^4.2.4",
     "commitlint-config-cz": "^0.13.2",
     "cz-conventional-changelog": "^3.3.0",
@@ -44,9 +42,7 @@
     "release-it": "14.11.5",
     "rimraf": "3.0.2",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0"
+    "typescript": "^4.4.0"
   },
   "config": {
     "commitizen": {

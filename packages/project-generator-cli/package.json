@@ -1,11 +1,10 @@
 {
-  "name": "@codesuperman/project-generator",
-  "version": "1.0.8",
+  "name": "@codesuperman/project-generator-cli",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
   "bin": {
-    "project-generator": "./bin/cli.js",
-    "pg-cli": "./bin/cli.js"
+    "pgc": "./bin/cli.js"
   },
   "files": ["dist/"],
   "scripts": {
