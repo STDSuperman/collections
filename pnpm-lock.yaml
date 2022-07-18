@@ -80,7 +80,26 @@ importers:
       typescript: registry.npmjs.org/typescript/4.7.4
 
   packages/project-generator-cli:
-    specifiers: {}
+    specifiers:
+      commander: 8.2.0
+      consola: 2.15.3
+      ejs: 3.1.6
+      execa: 5.1.1
+      fs-extra: 10.0.0
+      import-local: 3.0.2
+      jsonfile: 6.1.0
+      lodash: 4.17.21
+      tslib: 2.3.1
+    dependencies:
+      commander: registry.npmjs.org/commander/8.2.0
+      consola: registry.npmjs.org/consola/2.15.3
+      ejs: registry.npmjs.org/ejs/3.1.6
+      execa: registry.npmjs.org/execa/5.1.1
+      fs-extra: registry.npmjs.org/fs-extra/10.0.0
+      import-local: registry.npmjs.org/import-local/3.0.2
+      jsonfile: registry.npmjs.org/jsonfile/6.1.0
+      lodash: registry.npmjs.org/lodash/4.17.21
+      tslib: registry.npmjs.org/tslib/2.3.1
 
   packages/project-generator-cli/sample:
     specifiers: {}
